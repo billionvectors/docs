@@ -1,7 +1,27 @@
 ---
-title: Introduction
-description: 'Welcome to the home of your new documentation'
+title: asimplevectors
+description: 'asimplevectors is a high-performance vector database optimized for retrieval-augmented generation (RAG). It provides fast and reliable clustering through Rust and the Raft consensus protocol, while leveraging SQLite3 for easy data management. Additionally, the database includes built-in key-value storage for managing original document data within the vector database.'
 ---
+
+## Key Advantages
+
+- **Optimized for RAG**: Built to handle RAG tasks efficiently.
+- **Fast and Reliable Clustering**: Uses Rust and the Raft consensus protocol to deliver a highly performant clustering system.
+- **Easy Data Management**: Utilizes SQLite3 for simple and effective data organization.
+- **Integrated Key-Value Storage**: Manage original document data alongside vectors with the built-in key-value store.
+
+## Features
+
+- **Version Management**: Includes support for version control, with A/B testing capabilities.
+- **Key-Value Storage**: Built-in key-value storage functionality.
+- **Snapshot Support**: Offers snapshot capabilities for data backups and state saving.
+- **Dense & Sparse Vector Management**: Handles both dense and sparse vector types.
+- **Multi-Vector Support**: In-progress support for managing multiple vector types (WIP).
+
+## Overall Architecture
+
+The REST server is implemented in Rust, ensuring high stability and performance. For clustering, the Raft consensus protocol has been adopted. Raft is a simple yet powerful consensus algorithm that enhances the system's availability and reliability.
+The `asimplevectors` project leverages the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library, which is implemented in C++. The [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library uses SQLite3, providing reliable and convenient data management. Additionally, the system supports RBAC (Role-Based Access Control), making administration and management straightforward.
 
 <img
   className="block dark:hidden"
@@ -13,6 +33,18 @@ description: 'Welcome to the home of your new documentation'
   src="/images/hero-dark.svg"
   alt="Hero Dark"
 />
+
+## Dependencies
+
+The system requires the following dependencies to function properly:
+
+- **Rust**: The core of the REST server and clustering logic is built using Rust for its performance and reliability.
+- **CMake**: Required for building the C++ components, including the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library.
+- **OpenRaft**: Used for implementing the Raft consensus protocol, which ensures reliable clustering and data consistency.
+- **SQLite3**: Integrated into the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library to provide lightweight, reliable data management.
+- **RocksDB**: A high-performance key-value storage used for managing original document data and vector storage efficiently.
+- **OpenSSL**: Ensures secure communication within the system, especially for the REST API and data transfer.
+- **Docker**: Facilitates the containerization of the system, ensuring consistent environments and easy deployment across different platforms.
 
 ## Setting up
 
