@@ -3,6 +3,20 @@ title: asimplevectors
 description: 'asimplevectors is a high-performance vector database optimized for retrieval-augmented generation (RAG). It provides fast and reliable clustering through Rust and the Raft consensus protocol, while leveraging SQLite3 for easy data management. Additionally, the database includes built-in key-value storage for managing original document data within the vector database.'
 ---
 
+## Use Cases of Vector Database
+
+A vector database is designed to efficiently handle and manage high-dimensional vector data, making it an essential tool in various domains. Below are some key use cases:
+
+<img
+  src="/images/vectordatabase_usecase.svg"
+  alt="Vector Database Usecase"
+/>
+
+- **Retrieval-Augmented Generation (RAG)**: In RAG, vector databases play a key role by allowing retrieval of relevant documents or data based on vector similarity, which is then used to augment generative models like large language models (LLMs). This significantly improves the quality of the generated output by providing contextually relevant information.
+- **Recommendation Systems**: By comparing user interaction data or product features in vector space, vector databases can provide fast and accurate recommendations for items such as movies, products, or music.
+- **Semantic Search**: Vector databases enable more meaningful search results by representing text as vectors. This allows for searches based on the intent or meaning of the query, rather than just keyword matching.
+- **Image and Video Search**: By storing visual data as vectors, the system allows for similarity-based searches of images or videos. This can be used in applications like facial recognition or finding visually similar products.
+
 ## Key Advantages
 
 - **Optimized for RAG**: Built to handle RAG tasks efficiently.
@@ -21,17 +35,17 @@ description: 'asimplevectors is a high-performance vector database optimized for
 ## Overall Architecture
 
 The REST server is implemented in Rust, ensuring high stability and performance. For clustering, the Raft consensus protocol has been adopted. Raft is a simple yet powerful consensus algorithm that enhances the system's availability and reliability.
-The `asimplevectors` project leverages the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library, which is implemented in C++. The [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library uses SQLite3, providing reliable and convenient data management. Additionally, the system supports RBAC (Role-Based Access Control), making administration and management straightforward.
+The [`asimplevectors`](https://github.com/billionvectors/asimplevectors) project leverages the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library, which is implemented in C++. The [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library uses SQLite3, providing reliable and convenient data management. Additionally, the system supports RBAC (Role-Based Access Control), making administration and management straightforward.
 
 <img
   className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
+  src="/images/overallarchitecture.svg"
+  alt="Overall Architecture"
 />
 <img
   className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
+  src="/images/overallarchitecture.svg"
+  alt="Overall Architecture"
 />
 
 ## Dependencies
@@ -41,6 +55,7 @@ The system requires the following dependencies to function properly:
 - **Rust**: The core of the REST server and clustering logic is built using Rust for its performance and reliability.
 - **CMake**: Required for building the C++ components, including the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library.
 - **OpenRaft**: Used for implementing the Raft consensus protocol, which ensures reliable clustering and data consistency.
+- **HNSWLib**: A library for efficient approximate nearest neighbor search, improving the performance of vector similarity queries.
 - **SQLite3**: Integrated into the [`atinyvectors`](https://github.com/billionvectors/atinyvectors) library to provide lightweight, reliable data management.
 - **RocksDB**: A high-performance key-value storage used for managing original document data and vector storage efficiently.
 - **OpenSSL**: Ensures secure communication within the system, especially for the REST API and data transfer.
