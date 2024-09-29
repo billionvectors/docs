@@ -1,0 +1,26 @@
+---
+title: Data Structures
+description: 'This page shows that overview of the key components of the data structure'
+---
+
+## Data Structure
+
+**asimplevectors** is designed to organize and manage vector data efficiently within a **space**, which refers to a **vector space**. Below is an overview of the key components of the data structure:
+
+<img
+  src="/images/datastructure.svg"
+  alt="Data Structures"
+/>
+
+- **Space**:  
+  Each vector space is a container that holds vector data. It represents a specific environment or domain for storing vectors, such as embedding data from a particular model. The space allows for efficient searching, indexing, and retrieval of vector data based on similarity.
+- **Versioning**:  
+  Each space supports a versioning system. This is particularly important for **RAG** (Retrieval-Augmented Generation) tasks, where embeddings may change as the embedding models are updated or refined. By maintaining multiple versions within a space, the database can track and manage different iterations of embeddings without overwriting previous data, enabling seamless updates and retrieval across versions.
+- **Vector Data**:  
+  Within each version of a space, the actual vector data is stored. The vector data can take one of two forms:
+  - **Dense Vectors**: Represented as arrays of floating-point numbers, dense vectors are typically used for tasks requiring full representation of data in all dimensions.
+  - **Sparse Vectors**: Sparse vectors store only the non-zero elements and their indices, making them more memory-efficient for data where most dimensions are empty or irrelevant.
+- **Key-Value Storage**:  
+  In addition to vector data, the database includes **Key-Value Storage**. This is designed to store the original documents or data that have been vectorized. By associating each vector with its corresponding original document through key-value pairs, the database facilitates easier management of source data alongside its vector representation. This is especially useful for retrieval tasks, as it allows quick access to the raw, non-vectorized content after finding relevant vectors through similarity searches.
+
+Each vector is linked to its corresponding version, ensuring that operations such as searches and updates are performed within the correct version of the space. This allows the database to maintain compatibility with historical data while supporting new data as embedding models evolve.

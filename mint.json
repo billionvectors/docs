@@ -54,7 +54,14 @@
       "pages": [
         "introduction",
         "quickstart",
-        "development"
+        "clustering"
+      ]
+    },
+    {
+      "group": "Architecture",
+      "pages": [
+        "architecture/overallarchitecture",
+        "architecture/datastructure"
       ]
     },
     {
