@@ -1,98 +1,49 @@
 ---
 title: 'Clustering'
-description: 'Learn how to preview changes locally'
 ---
 
-<Info>
-  **Prerequisite** You should have installed Node.js (version 18.10.0 or
-  higher).
-</Info>
+The **asimplevectors** system utilizes Raft-based clustering to ensure high availability and reliability across distributed nodes. Clustering allows multiple nodes to work together seamlessly, with the Raft consensus protocol ensuring consistency and fault tolerance. The leader node manages write operations, while follower nodes replicate data to maintain data integrity. This clustering setup ensures that even if some nodes fail, the system can continue operating with minimal disruption, making **asimplevectors** highly robust for large-scale deployments.
 
-Step 1. Install Mintlify on your OS:
 
-<CodeGroup>
+## Clustering
 
-```bash npm
-npm i -g mintlify
-```
-
-```bash yarn
-yarn global add mintlify
-```
-
-</CodeGroup>
-
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
-
+1. Start Leader Node
 ```bash
-mintlify dev
+docker build --build-arg BUILD_TYPE=Release -t asimplevectors .
+docker run -p 21001:21001 -p 21002:21002 asimplevectors --id 1 &
+curl --silent "127.0.0.1:21001/cluster/init" -H "Content-Type: application/json" -d '{}'
 ```
-
-The documentation website is now available at `http://localhost:3000`.
-
-### Custom Ports
-
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
-
+2. Start Follower nodes
 ```bash
-mintlify dev --port 3333
+docker run -p 22001:21001 -p 22002:21002 asimplevectors --id 2 &
+docker run -p 23001:21001 -p 23002:21002 asimplevectors --id 3 &
 ```
-
-You will see an error like this if you try to run Mintlify in a port that's already taken:
-
-```md
-Error: listen EADDRINUSE: address already in use :::3000
+3. Register new cluster
+```bash
+curl --silent "127.0.0.1:21001/cluster/add-learner" -H "Content-Type: application/json" -d '[2, "127.0.0.1:22001", "127.0.0.1:22002"]'
+curl --silent "127.0.0.1:21001/cluster/add-learner" -H "Content-Type: application/json" -d '[3, "127.0.0.1:23001", "127.0.0.1:23001"]'
 ```
-
-## Mintlify Versions
-
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
+4. Test
+```bash
+curl --silent "127.0.0.1:21001/cluster/metrics"
 ```
+This adds a clear note about Raft's recommendation for an odd number of nodes but also specifies that two nodes will still work.
 
-```bash yarn
-yarn global upgrade mintlify
+## Change Membership
+
+If you want to remove or change membership then try membership api
+```bash
+curl --silent "127.0.0.1:21001/cluster/change-membership" -H "Content-Type: application/json" -d '[1, 2, 3]'
 ```
-
-</CodeGroup>
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Startup
-  Plan](https://mintlify.com/pricing)
-</Tip>
-
-You should see the following if the deploy successfully went through:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
 
 ## Troubleshooting
 
-Here's how to solve some common problems when working with the CLI.
+When working with a Raft consensus cluster in **asimplevectors**, certain issues can arise due to the nature of how Raft handles leadership and write commands. Below are common problems and how to resolve them:
 
-<AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
+### Issue: Write Command Sent to Follower Node
 
-Repeat step 3.
+In a Raft cluster, all **write commands must be sent to the leader node** for optimal performance. If a write command is mistakenly sent to a follower node, the system will return an error indicating that the node is not the leader.
 
-  </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
+#### Solution:
+- Use the **metrics API** to identify the current leader in the cluster.  
+- Once the leader is identified, resend the write command to the leader node to ensure successful execution.

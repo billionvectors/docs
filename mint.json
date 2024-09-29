@@ -17,8 +17,8 @@
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:support@billionvectors.com"
+      "name": "Blog",
+      "url": "https://asimplevectors.com"
     }
   ],
   "topbarCtaButton": {
@@ -29,23 +29,6 @@
     {
       "name": "API Reference",
       "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://asimplevectors.com"
     }
   ],
   "navigation": [
@@ -61,18 +44,20 @@
       "group": "Architecture",
       "pages": [
         "architecture/overallarchitecture",
-        "architecture/datastructure"
+        "architecture/datastructure",
+        "architecture/raftconsensus"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Features",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "features/space",
+        "features/version",
+        "features/vector",
+        "features/search",
+        "features/snapshot",
+        "features/keyvalue",
+        "features/accesscontrol"
       ]
     },
     {

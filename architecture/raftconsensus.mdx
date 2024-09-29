@@ -1,0 +1,34 @@
+---
+title: Raft Consensus
+description: 'The **asimplevectors** system employs **Raft Consensus** to manage clustering operations, ensuring reliable and fault-tolerant clustering across multiple nodes'
+---
+
+## Raft Consensus in asimplevectors
+
+<img
+  src="https://www.datocms-assets.com/2885/1557341311-raft-protocol.jpg?fit=max&fm=webp&q=80&w=2500"
+  alt="Raft Consensus overview"
+/>
+
+This image illustrated by [`mt165`](https://x.com/mt165?mx=2)
+
+Below are the key aspects of how Raft is utilized:
+
+<img
+  src="images/raftconsensus.svg"
+  alt="Raft Consensus overview"
+/>
+
+- **Clustering Control**:  
+  The core clustering mechanism in **asimplevectors** is powered by the Raft consensus algorithm. Raft is chosen for its simplicity and reliability in maintaining consistent data across distributed systems. It ensures that all nodes in a cluster agree on the same data, even in the presence of network failures or node crashes.
+
+- **High Reliability**:  
+  Raft's design enables **asimplevectors** to build a highly reliable clustering architecture. Through its leader election and log replication mechanisms, Raft ensures that the system can tolerate failures and continue operating without data loss or corruption, making it ideal for production environments requiring high availability.
+
+- **Implemented in Rust**:  
+  The system's clustering capabilities are implemented in Rust, leveraging its memory safety and performance. [`OpenRaft`](https://github.com/databendlabs/openraft), a well-established open-source library for Raft consensus, is used to build the clustering layer, ensuring a robust, battle-tested solution.
+
+- **Important Note on Node Configuration**:  
+  Raft works most efficiently with an **odd number of nodes**. This is because Raft requires a majority of nodes (quorum) to agree on changes for consensus, and odd numbers ensure that a clear majority can always be formed. Although the system can operate with just 2 nodes, it is highly recommended to configure clusters with **odd numbers of nodes** (e.g., 3, 5, or more) for optimal stability and reliability.
+
+In summary, **asimplevectors** benefits from the robustness and fault tolerance of Raft consensus, ensuring that data consistency and high availability are maintained across the system, even in distributed environments.
