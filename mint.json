@@ -33,19 +33,36 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "About us",
       "pages": [
-        "introduction",
-        "quickstart",
-        "clustering"
+        "about/whatami",
+        "about/releases",
+        "about/comparison"
       ]
     },
     {
-      "group": "Architecture",
+      "group": "Get Started",
       "pages": [
-        "architecture/overallarchitecture",
-        "architecture/datastructure",
-        "architecture/raftconsensus"
+        "getstarted/introduction",
+        "getstarted/quickstart",
+        "getstarted/clustering",
+        "getstarted/accesscontrol"
+      ]
+    },
+    {
+      "group": "Concepts",
+      "pages": [
+        {
+          "group": "Architecture",
+          "pages": [
+            "architecture/overallarchitecture",
+            "architecture/datastructure",
+            "architecture/raftconsensus"
+          ]
+        },
+        "concepts/hnsw",
+        "concepts/metrics",
+        "concepts/rag"
       ]
     },
     {
