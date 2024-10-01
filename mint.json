@@ -52,14 +52,9 @@
     {
       "group": "Concepts",
       "pages": [
-        {
-          "group": "Architecture",
-          "pages": [
-            "architecture/overallarchitecture",
-            "architecture/datastructure",
-            "architecture/raftconsensus"
-          ]
-        },
+        "architecture/overallarchitecture",
+        "architecture/datastructure",
+        "architecture/raftconsensus",
         "concepts/hnsw",
         "concepts/metrics",
         "concepts/rag"
