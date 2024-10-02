@@ -1,0 +1,96 @@
+---
+title: 'Configuration'
+---
+
+The configuration for [`asimplevectors`](https://github.com/billionvectors/asimplevectors) can be handled in two primary ways: through environment variables or by passing command-line arguments. This allows for flexible and dynamic configuration without the need to modify the codebase.
+
+To apply configuration settings, you can either:
+
+1. Copy the `.env.local` file to `.env` to configure via environment variables.
+```bash
+cp -rf .env.local .env
+```
+> **Note**: If you are using Docker, this step is unnecessary as Docker will automatically copy the `.env.local` file to `.env` when running the container.
+
+
+2. Pass the configuration as command-line arguments, such as `--id 1`.
+
+## Environment Variables
+
+Below are the key environment variables used in `asimplevectors`. These can be set either manually or by using an `.env` file:
+
+- `ATV_HNSW_INDEX_CACHE_CAPACITY`: Set the cache capacity for the HNSW index.
+- `ATV_DB_NAME`: Define the name of the database.
+- `ATV_LOG_FILE`: Specify the path to the log file.
+- `ATV_LOG_LEVEL`: Set the log level (e.g., info, debug).
+- `ATV_DEFAULT_M`: Set the default **M** value for the HNSW algorithm.
+- `ATV_DEFAULT_EF_CONSTRUCTION`: Set the **EF Construction** value for the HNSW algorithm.
+- `ATV_HNSW_MAX_DATASIZE`: Set the maximum size of the data.
+- `ATV_DATA_PATH`: Define the path where data is stored.
+- `ATV_DEFAULT_TOKEN_EXPIRE_DAYS`: Set the token expiration in days.
+- `ATV_JWT_TOKEN_KEY`: Define the JWT token key for security.
+- `ATV_ENABLE_SECURITY`: Enable or disable security features (1: enable, 0: disable).
+- `ATV_INSTANCE_ID`: Set the instance ID for the current execution.
+- `ATV_HTTP_ADDR`: Define the HTTP address for the service.
+- `ATV_RPC_ADDR`: Define the RPC address for inter-process communication.
+
+## Command-Line Arguments
+
+Alternatively, you can set the configuration via command-line arguments. This is useful if you want to override the default settings or environment variables on the fly.
+
+Here are the available command-line arguments:
+
+- `--cache_capacity`: Set cache capacity for the HNSW index.
+- `--db_name`: Specify the database name.
+- `--log_file`: Set the log file path.
+- `--log_level`: Set the log level (e.g., info, debug).
+- `--m`: Set the default **M** value for the HNSW algorithm.
+- `--ef_construction`: Set the **EF Construction** value for the HNSW algorithm.
+- `--max_datasize`: Define the maximum size of the data.
+- `--data_path`: Specify the path to store data.
+- `--token_expire_days`: Set the number of days before a token expires.
+- `--jwt_token_key`: Set the JWT token key.
+- `--enable_security`: Enable or disable security (1: enable, 0: disable).
+- `--id`: Define the instance ID.
+- `--http-addr`: Set the HTTP address.
+- `--rpc-addr`: Set the RPC address.
+
+### Example Usage
+
+To run the service with custom configurations using command-line arguments:
+
+```bash
+./asimplevectors --id 1 --cache_capacity 200 --db_name mydatabase
+```
+Alternatively, you can set these values in an .env file or pass them as environment variables:
+```bash
+export ATV_INSTANCE_ID=1
+export ATV_HNSW_INDEX_CACHE_CAPACITY=200
+export ATV_DB_NAME=mydatabase
+./asimplevectors
+```
+
+## Default Values (version 0.1.0)
+
+Here are the default values for some key configurations:
+
+- **Cache Capacity**: 100
+- **Database Name**: `:memory:`
+- **Log File**: `logs/atinyvectors.log`
+- **Log Level**: `info`
+- **M Value**: 16
+- **EF Construction**: 100
+- **Max Data Size**: 1,000,000
+- **Data Path**: `data/`
+- **Token Expire Days**: 30
+- **JWT Token Key**: A default secure key string
+- **Enable Security**: 0 (disabled)
+- **Instance ID**: 1
+- **HTTP Address**: `0.0.0.0:21001`
+- **RPC Address**: `0.0.0.0:22001`
+
+> **Note**: These default values may change depending on the version of the software. For the latest default settings, please refer to the [config.rs file](https://github.com/billionvectors/asimplevectors/blob/main/src/config.rs).
+
+## Conclusion
+
+The configuration system in asimplevectors allows for flexible and dynamic management of environment variables and command-line arguments. This enables you to easily adjust settings for different environments or during runtime, providing both versatility and control over the system’s behavior.

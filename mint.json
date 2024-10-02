@@ -18,7 +18,7 @@
   "topbarLinks": [
     {
       "name": "Blog",
-      "url": "https://asimplevectors.com"
+      "url": "https://asimplevectors.com/blog/"
     }
   ],
   "topbarCtaButton": {
@@ -45,8 +45,7 @@
             "architecture/raftconsensus",
             "concepts/algorithms",
             "concepts/metrics",
-            "concepts/rag",
-            "concepts/configuration"
+            "concepts/accesscontrol"
           ]
         },
         "about/releases"
@@ -57,7 +56,14 @@
       "pages": [
         "getstarted/quickstart",
         "getstarted/clustering",
-        "getstarted/accesscontrol"
+        "getstarted/configuration"
+      ]
+    },
+    {
+      "group": "Examples",
+      "pages": [
+        "examples/examples",
+        "examples/rag"
       ]
     },
     {
