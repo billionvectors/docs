@@ -10,8 +10,10 @@ To apply configuration settings, you can either:
 ```bash
 cp -rf .env.local .env
 ```
-> **Note**: If you are using Docker, this step is unnecessary as Docker will automatically copy the `.env.local` file to `.env` when running the container.
 
+<Tip>
+If you are using Docker, this step is unnecessary as Docker will automatically copy the `.env.local` file to `.env` when running the container.
+</Tip>
 
 2. Pass the configuration as command-line arguments, such as `--id 1`.
 
@@ -89,7 +91,9 @@ Here are the default values for some key configurations:
 - **HTTP Address**: `0.0.0.0:21001`
 - **RPC Address**: `0.0.0.0:22001`
 
-> **Note**: These default values may change depending on the version of the software. For the latest default settings, please refer to the [config.rs file](https://github.com/billionvectors/asimplevectors/blob/main/src/config.rs).
+<Tip>
+These default values may change depending on the version of the software. For the latest default settings, please refer to the [config.rs file](https://github.com/billionvectors/asimplevectors/blob/main/src/config.rs).
+</Tip>
 
 ## Conclusion
 

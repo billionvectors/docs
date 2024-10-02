@@ -1,36 +1,64 @@
 ---
 title: 'Version'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
+## Why Versioning is Needed
 
-### Inline Code
+In a vector database, versioning is crucial for several reasons:
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+- **Model Changes**: Unlike traditional relational databases, when embedding models change, there is often a need to migrate all the data. Keeping track of versions allows for smoother transitions between different embedding models.
+- **A/B Testing**: Data versioning makes it easier to manage multiple versions of the same dataset, allowing for effective A/B testing.
+- **Ease of Management**: Introducing versions simplifies the management of data, ensuring that older versions are still accessible, and new versions can be created without disrupting ongoing processes.
 
+## Creating a Version
+
+To create a version, use the `/api/space/{spacename}/version` endpoint by passing the following JSON object:
+
+```bash
+curl "127.0.0.1:21001/api/space/{spacename}/version" -H "Content-Type: application/json" -d  \
+'{
+    "name": "version1",
+    "description": "Initial version",
+    "tag": "v1.0",
+    "is_default": true
+}'
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+* name: The name of the version (e.g., version1).
+* description: A brief description of the version (e.g., Initial version).
+* tag: A version tag (e.g., v1.0).
+* is_default: A boolean that sets whether this is the default version.
+
+## Retrieving Version Information
+
+### Get Default Version
+
+To retrieve information about the default version, use the following endpoint:
+
+```bash
+curl "127.0.0.1:21001/api/space/{spacename}/version/default"
 ```
 
-### Code Block
+### Get Version by Name
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+To get version information by specifying its name, use this endpoint:
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+```bash
+curl "127.0.0.1:21001/api/space/{spacename}/version/{versionname}/by-name"
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+### List All Versions
+
+To retrieve a list of all versions for a specific space, use the following endpoint:
+
+```bash
+curl "127.0.0.1:21001/api/space/{spacename}/version/list"
 ```
-````
+
+By keeping track of different versions, it becomes easier to maintain a clean, organized structure for managing vector data across different iterations, testing environments, and models.
+
+
+For more detailed examples, please refer [https://github.com/billionvectors/asimplevectors/example](https://github.com/billionvectors/asimplevectors/tree/main/example)
+
+```bash
+./run_example.sh version
+```
