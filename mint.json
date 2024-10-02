@@ -36,14 +36,13 @@
       "group": "About us",
       "pages": [
         "about/asimplevectors",
-        "about/releases",
-        "about/comparison"
+        "about/advantages",
+        "about/releases"
       ]
     },
     {
       "group": "Get Started",
       "pages": [
-        "getstarted/introduction",
         "getstarted/quickstart",
         "getstarted/clustering",
         "getstarted/accesscontrol"

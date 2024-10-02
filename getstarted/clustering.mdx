@@ -1,36 +1,37 @@
 ---
 title: 'Clustering'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
+Clustering in `asimplevectors` is built using a distributed architecture with support for Raft consensus. This ensures reliable and consistent clustering across nodes in a high-performance environment.
 
-### Inline Code
+## Setup Instructions
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+You can follow these steps to build and run the cluster:
 
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+```bash
+docker build --build-arg BUILD_TYPE=Release -t asimplevectors .
+docker run -p 21001:21001 -p 21002:21002 asimplevectors --id 1 &
+curl --silent "127.0.0.1:21001/cluster/init" -H "Content-Type: application/json" -d '{}'
 
-### Code Block
-
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+docker run -p 22001:21001 -p 22002:21002 asimplevectors --id 2 &
+docker run -p 23001:21001 -p 23002:21002 asimplevectors --id 3 &
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+This will initialize a cluster with three nodes. The first node (id 1) is set as the leader.
+
+## Registering New Nodes
+To add additional nodes (learners) to the cluster, you can register them as follows:
+```bash
+# register new cluster nodes
+curl --silent "127.0.0.1:21001/cluster/add-learner" -H "Content-Type: application/json" -d '[2, "127.0.0.1:22001", "127.0.0.1:22002"]'
+curl --silent "127.0.0.1:21001/cluster/add-learner" -H "Content-Type: application/json" -d '[3, "127.0.0.1:23001", "127.0.0.1:23001"]'
 ```
-````
+Once the nodes have been added, you can retrieve cluster metrics to verify their status:
+```bash
+curl --silent "127.0.0.1:21001/cluster/metrics"
+```
+## Node Recommendations
+
+It is recommended by the Raft consensus protocol to have an odd number of nodes (e.g., 3, 5, etc.) to prevent split-brain scenarios and ensure quorum is met in case of node failure. However, it is possible to run the cluster with just two nodes if needed, although this setup may be more prone to availability issues.
+
+For a deeper understanding of how the Raft consensus algorithm works in `asimplevectors`, please refer to the [Concepts/Raft Consensus](/architecture/raftconsensus) page.

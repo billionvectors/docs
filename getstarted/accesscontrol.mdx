@@ -1,36 +1,51 @@
 ---
 title: 'Access Control'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
+## Overview
 
-### Inline Code
+`asimplevectors` employs a robust **Rule-Based Access Control (RBAC)** system, which is designed around the use of **JWT Tokens**. Each token is tied to specific permissions, determining the level of access a user has to various system components. This ensures a secure and scalable way to control user access in distributed environments.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+The access control system is designed to manage permissions based on the following rules:
 
+- **0**: Denied
+- **1**: Read-only access
+- **2**: Read and write access
+
+## Access Control Permissions
+
+Each field in the RBAC system represents a different system component, and permissions are controlled via the corresponding integer values.
+
+### Permissions Breakdown
+
+| JSON Key        | Permission Type         | Description                                                             |
+|-----------------|-------------------------|-------------------------------------------------------------------------|
+| **system**      | **System Permission**    | Controls general system-level access                                    |
+| **space**       | **Space Permission**     | Manages access to spaces or collections of vectors                      |
+| **version**     | **Version Permission**   | Grants access to version management, including viewing and modifying versions |
+| **vector**      | **Vector Permission**    | Controls access to vector operations such as viewing or modifying vectors |
+| **search**      | **Search Permission**    | Governs the ability to perform searches within the vector database       |
+| **snapshot**    | **Snapshot Permission**  | Manages the ability to create and restore from snapshots                 |
+| **security**    | **Security Permission**  | Controls access to security-related features like encryption and secure communication |
+| **keyvalue**    | **Key-Value Permission** | Manages access to the built-in key-value storage                        |
+
+## JWT Token-Based Access
+
+The RBAC system in `asimplevectors` is JWT-based, meaning that each user’s token is generated and contains encoded claims representing their access permissions. These tokens are securely transmitted and verified at every request to ensure the user has the appropriate permissions for the action they are attempting to perform.
+
+### Submitting JWT Tokens
+
+To submit a JWT token, include it in the **Authorization** header using the **Bearer** scheme. For example:
+
+```bash
+curl -H "Authorization: Bearer <your-jwt-token>" "127.0.0.1:21001/api/security/tokens"
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+This ensures the token is securely passed with each API request to verify user permissions.
 
-### Code Block
+For more detailed examples, please refer to the [Features/Access Control](/features/accesscontrol) page.
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+## Expiration and Security
+The expire_time_utc field ensures that each token has a defined lifespan. Once a token expires, the user must reauthenticate to receive a new token, further enhancing the security of the system.
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+## Summary
+In summary, the access control in asimplevectors is designed to be both flexible and secure, with a rule-based system powered by JWT tokens. This approach ensures that each user’s permissions are clearly defined and enforceable, providing a scalable solution for managing access in distributed environments.

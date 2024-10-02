@@ -30,4 +30,9 @@ Use Cases of [`asimplevectors`](https://github.com/billionvectors/asimplevectors
 - **Key-Value Storage**: Built-in key-value storage functionality.
 - **Snapshot Support**: Offers snapshot capabilities for data backups and state saving.
 - **Dense & Sparse Vector Management**: Handles both dense and sparse vector types.
-- **Multi-Vector Support**: In-progress support for managing multiple vector types (WIP).
+
+### Supported Metrics: L2, Cosine, InnerProduct
+`asimplevectors` supports multiple distance metrics to handle a variety of use cases, offering flexibility in how vectors are compared.
+- **L2 Distance (Euclidean Distance)**: Useful for scenarios where the absolute difference between vectors matters. It is widely used in scenarios like image retrieval where geometric proximity between vectors is essential.
+- **Cosine Similarity**: Ideal for applications where the angle between vectors is important, such as in document similarity tasks. This metric is normalized and measures how similar vectors are, regardless of their magnitude.
+- **Inner Product (Dot Product)**: Commonly used for ranking and recommendation systems, the Inner Product focuses on maximizing the relevance score between vectors. It works best when vector magnitudes carry meaningful weight.
