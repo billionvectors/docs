@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "asimplevectors",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -54,9 +54,10 @@
         "architecture/overallarchitecture",
         "architecture/datastructure",
         "architecture/raftconsensus",
-        "concepts/hnsw",
+        "concepts/algorithms",
         "concepts/metrics",
-        "concepts/rag"
+        "concepts/rag",
+        "concepts/configuration"
       ]
     },
     {
