@@ -1,36 +1,51 @@
 ---
 title: 'Access Control'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
+## Overview
 
-### Inline Code
+In [`asimplevectors`](https://github.com/billionvectors/asimplevectors), we support **Rule-Based Access Control (RBAC)** to ensure secure access to different parts of the system. For more details on how the rules work, please refer to the [concepts/accesscontrol](/concepts/accesscontrol) page.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+By default, access control is disabled. To enable access control, you need to set the `ATV_ENABLE_SECURITY` key to `1` in your `.env` file:
 
+```bash .env
+ATV_ENABLE_SECURITY=1
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+Once access control is enabled, you can define permissions for different system components by creating access tokens.
+
+## Token Generation
+To generate a token with read/write (rw) permissions for the system, space, version, vector, and snapshot components, use the `/api/security/tokens` endpoint and provide the following JSON data:
 ```
-
-### Code Block
-
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+curl "127.0.0.1:21001/api/security/tokens" -H "Content-Type: application/json" -d \
+'{
+    "system": 2,
+    "space": 2,
+    "version": 2,
+    "vector": 2,
+    "snapshot": 2
+}'
 ```
+* system, space, version, vector, snapshot: Permission levels where 2 indicates read/write access.
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+## Using the Token
+After generating a token, you must include it in the Authorization header as a Bearer token when making API requests. Below is an example of how to use a token when accessing the `/api/space` endpoint:
+
+### Example: Accessing /api/space with a Bearer Token
+```bash
+curl "127.0.0.1:21001/api/space" -H "Authorization: Bearer {token}"
 ```
-````
+Replace `{token}` with the actual token string you received during token generation.
+
+## Listing All Tokens
+To view a list of all tokens that have been issued, you can use the following endpoint:
+```bash
+curl "127.0.0.1:21001/api/security/tokens"
+```
+## Summary
+By enabling access control, [`asimplevectors`](https://github.com/billionvectors/asimplevectors) allows you to manage permissions across various system components, ensuring secure access. Tokens are generated with specific read/write permissions for different parts of the system, and they must be included in the Authorization header when making API requests.
+
+For more detailed examples, please refer [https://github.com/billionvectors/asimplevectors/example](https://github.com/billionvectors/asimplevectors/tree/main/example)
+
+```bash
+./run_example.sh security
+```

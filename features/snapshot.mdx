@@ -1,36 +1,57 @@
 ---
 title: 'Snapshot'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
+## Overview
 
-### Inline Code
+In [`asimplevectors`](https://github.com/billionvectors/asimplevectors), a **snapshot** is a full replication of all **spaces**, including the index, database (DB), and key-value storage. This feature allows you to capture the entire state of your vector database at a specific point in time, providing a backup for restoration and other uses.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+### Snapshot Process
 
+- When a snapshot is requested, it replicates the index, database, and key-value store of all Spaces.
+- **Snapshot creation** can take 20 minutes or longer, as all nodes in the system generate the snapshot simultaneously.
+- The snapshot is stored in a **zip** format and includes an **SQLite3 database**.
+
+### Modifying the SQLite3 DB
+
+While it is possible to directly modify the SQLite3 database within a snapshot, it is **not recommended**. Direct modifications may affect the integrity of the database, and it is preferable to manage data using the provided API.
+
+## Snapshot Endpoints
+
+### Creating a Snapshot
+
+To create a snapshot of all Spaces, use the `/api/snapshot` endpoint. You can also force the inclusion of a specific Space's index by specifying the following JSON option. This will force a dump of the Space's index and replicate it, speeding up the restoration process.
+
+```bash
+curl "127.0.0.1:21001/api/snapshot" -H "Content-Type: application/json" -d \
+'{
+    "spacename": 1
+}'
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+### Checking Available Snapshots
+To view a list of all available snapshots, use the `/api/snapshots` endpoint:
 ```
-
-### Code Block
-
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
+curl "127.0.0.1:21001/api/snapshots"
+```
+### Downloading a Snapshot
+To download a specific snapshot, use the following endpoint, replacing `{snapshot-date}` with the date of the snapshot you wish to download:
+```bash
+curl "127.0.0.1:21001/api/snapshot/20241002101000/download"
+```
+### Restoring from a Snapshot
+To restore a snapshot, use the following endpoint, replacing `{snapshot-date}` with the date of the snapshot you wish to restore:
+```bash
+curl "127.0.0.1:21001/api/snapshot/{snapshot-date}/restore" -H "Content-Type: application/json" -d  \
+{
 }
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+## Summary
+
+Snapshots in `asimplevectors` allow you to fully back up and restore Spaces, including their index, DB, and key-value data. This ensures that you can recover or replicate the state of your vector database at any point in time. While you can modify the SQLite3 database within a snapshot, it's generally recommended to avoid direct changes to maintain the system's integrity.
+
+For more detailed examples, please refer [https://github.com/billionvectors/asimplevectors/example](https://github.com/billionvectors/asimplevectors/tree/main/example)
+
+```bash
+./run_example.sh snapshot
 ```
-````

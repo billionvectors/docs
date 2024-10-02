@@ -1,36 +1,50 @@
 ---
 title: 'Search'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
+## Overview
 
-### Inline Code
+In [`asimplevectors`](https://github.com/billionvectors/asimplevectors), you can perform searches on both dense and sparse vectors within a specified Space. The search operation allows you to query the vector database and retrieve the most similar vectors based on the specified input vector.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+## Search Endpoint
 
+The search endpoint for a specific Space is:
+
+`/api/space/{spacename}/search`
+
+### Searching with Dense Vectors
+
+To search using a dense vector, you can use the following JSON format. This will query the database with the given vector and return the most similar vectors.
+
+```bash
+curl "127.0.0.1:21001/api/space/spacename/search" -H "Content-Type: application/json" -d  \
+'{
+    "vector": [0.2, 0.3, 0.4, 0.3]
+}'
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
 
-### Code Block
+###  Searching with Sparse Vectors
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+To search using a sparse vector, the following JSON format should be used. The vector is represented by its sparse data, which includes the indices and corresponding values.
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
+```bash
+curl "127.0.0.1:21001/api/space/spacename/search" -H "Content-Type: application/json" -d  \
+'{
+    "vector": { 
+        "sparse_data": {
+            "indices": [1, 3],
+            "values": [0.9, 1.0]
+        } 
     }
-}
+}'
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+## Metadata-Filtered Search
+
+As of the current version (0.1.0), metadata-filtered search is a work-in-progress. Future releases will support the ability to filter search results based on metadata associated with vectors.
+
+For more detailed examples, please refer [https://github.com/billionvectors/asimplevectors/example](https://github.com/billionvectors/asimplevectors/tree/main/example)
+
+```bash
+./run_example.sh search
 ```
-````

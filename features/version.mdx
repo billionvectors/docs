@@ -15,7 +15,7 @@ In a vector database, versioning is crucial for several reasons:
 To create a version, use the `/api/space/{spacename}/version` endpoint by passing the following JSON object:
 
 ```bash
-curl "127.0.0.1:21001/api/space/{spacename}/version" -H "Content-Type: application/json" -d  \
+curl "127.0.0.1:21001/api/space/spacename/version" -H "Content-Type: application/json" -d  \
 '{
     "name": "version1",
     "description": "Initial version",
@@ -35,7 +35,7 @@ curl "127.0.0.1:21001/api/space/{spacename}/version" -H "Content-Type: applicati
 To retrieve information about the default version, use the following endpoint:
 
 ```bash
-curl "127.0.0.1:21001/api/space/{spacename}/version/default"
+curl "127.0.0.1:21001/api/space/spacename/version/default"
 ```
 
 ### Get Version by Name
@@ -43,7 +43,7 @@ curl "127.0.0.1:21001/api/space/{spacename}/version/default"
 To get version information by specifying its name, use this endpoint:
 
 ```bash
-curl "127.0.0.1:21001/api/space/{spacename}/version/{versionname}/by-name"
+curl "127.0.0.1:21001/api/space/spacename/version/{versionname}/by-name"
 ```
 
 ### List All Versions
@@ -51,7 +51,7 @@ curl "127.0.0.1:21001/api/space/{spacename}/version/{versionname}/by-name"
 To retrieve a list of all versions for a specific space, use the following endpoint:
 
 ```bash
-curl "127.0.0.1:21001/api/space/{spacename}/version/list"
+curl "127.0.0.1:21001/api/space/spacename/version/list"
 ```
 
 By keeping track of different versions, it becomes easier to maintain a clean, organized structure for managing vector data across different iterations, testing environments, and models.

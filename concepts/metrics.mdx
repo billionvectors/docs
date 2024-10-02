@@ -1,36 +1,9 @@
 ---
 title: 'Metrics'
-description: 'Display inline code and code blocks'
 ---
 
-## Basic
-
-### Inline Code
-
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
-
-### Code Block
-
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+## Supported Metrics: L2, Cosine, InnerProduct
+`asimplevectors` supports multiple distance metrics to handle a variety of use cases, offering flexibility in how vectors are compared.
+- **L2 Distance (Euclidean Distance)**: Useful for scenarios where the absolute difference between vectors matters. It is widely used in scenarios like image retrieval where geometric proximity between vectors is essential.
+- **Cosine Similarity**: Ideal for applications where the angle between vectors is important, such as in document similarity tasks. This metric is normalized and measures how similar vectors are, regardless of their magnitude.
+- **Inner Product (Dot Product)**: Commonly used for ranking and recommendation systems, the Inner Product focuses on maximizing the relevance score between vectors. It works best when vector magnitudes carry meaningful weight.

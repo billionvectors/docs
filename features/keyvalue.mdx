@@ -1,36 +1,89 @@
 ---
-title: 'Key Value Storage'
-description: 'Display inline code and code blocks'
+title: 'Key-Value Storage'
 ---
 
-## Basic
+## Overview
 
-### Inline Code
+Most vector databases do not support **key-value storage** functionality. However, in [`asimplevectors`](https://github.com/billionvectors/asimplevectors), we provide an integrated key-value storage system that allows you to manage original document data alongside vectors. This feature offers several significant advantages, particularly for tasks like Retrieval-Augmented Generation (RAG), where linking vectors to their source data is crucial for accuracy and efficiency.
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+## Advantages of Key-Value Storage
+
+### Optimized for RAG
+
+`asimplevectors` is optimized to handle RAG tasks with high efficiency. The integration of key-value storage allows you to seamlessly map query vectors to their corresponding documents or data. This is especially useful in generative AI applications, where relevant documents must be retrieved to generate context-aware responses.
+
+**Use Case**: Imagine you are building a generative AI system that retrieves documents from a large knowledge base. The key-value storage in `asimplevectors` allows you to store the original documents and retrieve them when necessary, improving both the accuracy and speed of your responses.
+
+### Easy Data Management
+
+With SQLite3 as the underlying database, managing both structured and unstructured data becomes straightforward. This allows you to store additional metadata, such as user preferences or document information, alongside your vectors without needing a separate system.
+
+**Use Case**: For applications that manage vectors and associated metadata (e.g., user preferences), you can store all relevant data in one place, making it easier to manage and retrieve both types of data simultaneously.
+
+### Integrated Key-Value Storage
+
+The built-in key-value storage in [`asimplevectors`](https://github.com/billionvectors/asimplevectors) allows you to link vector representations directly to their source data. This is particularly useful for maintaining context in scenarios like document retrieval, where you need to reference the full content of the document along with its vectorized representation.
+
+**Use Case**: Suppose you're managing a large corpus of scientific papers. With [`asimplevectors`](https://github.com/billionvectors/asimplevectors), you can store the vector representation of each paper as well as the full text of the document in key-value storage. This ensures you can retrieve both the vector and the original document when generating responses, maintaining full context and traceability.
+
+## Key-Value Storage Endpoints
+
+### Writing Data
+
+To store data in key-value storage, you can use the following endpoint:
+```
+POST /api/space/{spacename}/key/{key}
+```
+Example
+```bash
+curl -X POST "127.0.0.1:21001/api/space/spacename/key/testkey" -d  \
+'{
+    "hi":"hello"
+}'
+
+curl -X POST "127.0.0.1:21001/api/space/spacename/key/testkey2" -d  \
+'testdata'
+```
+### Reading Data
+
+To retrieve data from key-value storage, use this endpoint:
+```
+GET /api/space/{spacename}/key/{key}
+```
+Example:
+```bash
+curl "127.0.0.1:21001/api/space/spacename/key/testkey"
+```
+
+### Listing Keys
+
+To list all available keys in a Space, use the following endpoint:
+```
+GET /api/space/{spacename}/keys
+```
+Example:
+```bash
+curl "127.0.0.1:21001/api/space/spacename/keys"
+```
+
+### Deleting a Key
+
+To delete a key from key-value storage, use this endpoint:
 
 ```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+DELETE /api/space/{spacename}/key/{key}
+```
+Example:
+```bash
+curl -X DELETE "127.0.0.1:21001/api/space/spacename/key/testkey"
 ```
 
-### Code Block
+## Summary
+By integrating key-value storage directly into asimplevectors, users gain the ability to manage original data alongside vectors, enhancing both data retrieval and management. This functionality is particularly beneficial in RAG scenarios, where maintaining a link between vectors and their source data is critical for accuracy and performance.
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
+For more detailed examples, please refer [https://github.com/billionvectors/asimplevectors/example](https://github.com/billionvectors/asimplevectors/tree/main/example)
+
+```bash
+./run_example.sh keys
 ```
-
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
