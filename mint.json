@@ -37,6 +37,18 @@
       "pages": [
         "about/asimplevectors",
         "about/advantages",
+        {
+          "group": "Concepts",
+          "pages": [
+            "architecture/overallarchitecture",
+            "architecture/datastructure",
+            "architecture/raftconsensus",
+            "concepts/algorithms",
+            "concepts/metrics",
+            "concepts/rag",
+            "concepts/configuration"
+          ]
+        },
         "about/releases"
       ]
     },
@@ -46,18 +58,6 @@
         "getstarted/quickstart",
         "getstarted/clustering",
         "getstarted/accesscontrol"
-      ]
-    },
-    {
-      "group": "Concepts",
-      "pages": [
-        "architecture/overallarchitecture",
-        "architecture/datastructure",
-        "architecture/raftconsensus",
-        "concepts/algorithms",
-        "concepts/metrics",
-        "concepts/rag",
-        "concepts/configuration"
       ]
     },
     {
