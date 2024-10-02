@@ -60,13 +60,6 @@
       ]
     },
     {
-      "group": "Examples",
-      "pages": [
-        "examples/examples",
-        "examples/rag"
-      ]
-    },
-    {
       "group": "Features",
       "pages": [
         "features/space",
