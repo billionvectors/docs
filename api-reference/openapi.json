@@ -19,54 +19,110 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/api/security/tokens": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        "operationId": "list_rbac_tokens",
         "responses": {
           "200": {
-            "description": "Plant response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                  "$ref": "#/components/schemas/ListRbacTokensResponse"
                 }
               }
-            }
+            },
+            "description": "List of RBAC tokens"
           },
-          "400": {
-            "description": "Unexpected error",
+          "500": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/RbacTokenErrorResponse"
                 }
               }
-            }
+            },
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "tags": [
+          "security_handler"
+        ]
       },
       "post": {
-        "description": "Creates a new plant in the store",
+        "operationId": "create_rbac_token",
         "requestBody": {
-          "description": "Plant to add to the store",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/RbacTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbacTokenResponse"
+                }
+              }
+            },
+            "description": "RBAC token created successfully"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbacTokenErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "security_handler"
+        ]
+      }
+    },
+    "/api/security/tokens/{token}": {
+      "delete": {
+        "operationId": "delete_rbac_token",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbacTokenResponse"
+                }
+              }
+            },
+            "description": "RBAC token deleted successfully"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RbacTokenErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "security_handler"
+        ]
+      },
+      "put": {
+        "operationId": "update_rbac_token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RbacTokenRequest"
               }
             }
           },
@@ -74,115 +130,580 @@
         },
         "responses": {
           "200": {
-            "description": "plant response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/RbacTokenResponse"
                 }
               }
-            }
+            },
+            "description": "RBAC token updated successfully"
           },
-          "400": {
-            "description": "unexpected error",
+          "500": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/RbacTokenErrorResponse"
                 }
               }
-            }
+            },
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "tags": [
+          "security_handler"
+        ]
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
+    "/api/space": {
+      "post": {
+        "operationId": "space",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceRequest"
+              }
             }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
           },
-          "400": {
-            "description": "unexpected error",
+          "required": true
+        },
+        "responses": {
+          "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/SpaceResponse"
                 }
               }
-            }
+            },
+            "description": "Create spaces successfully"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
           }
-        }
+        },
+        "tags": [
+          "space_handler"
+        ]
       }
     }
   },
   "components": {
     "schemas": {
-      "Plant": {
+      "TokenDetails": {
+        "description": "Structure representing detailed information of a token",
+        "properties": {
+          "expire_time_utc": {
+            "description": "Expiry time in UTC",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "id": {
+            "description": "Unique identifier of the token",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "keyvalue": {
+            "description": "Key-value permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "search": {
+            "description": "Search permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "security": {
+            "description": "Security permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "snapshot": {
+            "description": "Snapshot permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "space": {
+            "description": "Space permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "space_id": {
+            "description": "Space ID associated with the token",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "system": {
+            "description": "System permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "token": {
+            "description": "The token value",
+            "type": "string"
+          },
+          "vector": {
+            "description": "Vector permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "version": {
+            "description": "Version permission level",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "space_id",
+          "token",
+          "expire_time_utc",
+          "system",
+          "space",
+          "version",
+          "vector",
+          "search",
+          "snapshot",
+          "security",
+          "keyvalue"
+        ],
+        "type": "object"
+      },
+      "ListRbacTokensResponse": {
+        "description": "Response structure for listing RBAC tokens",
+        "properties": {
+          "tokens": {
+            "description": "Array of token objects with detailed information",
+            "items": {
+              "$ref": "#/components/schemas/TokenDetails"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "tokens"
+        ],
+        "type": "object"
+      },
+      "RbacTokenErrorResponse": {
+        "description": "Error response structure",
+        "properties": {
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
+      "RbacTokenRequest": {
+        "description": "Request structure for creating or updating RBAC token",
+        "properties": {
+          "keyvalue": {
+            "description": "Key-value access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "security": {
+            "description": "Security access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "snapshot": {
+            "description": "Snapshot access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "space": {
+            "description": "Space access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "space_id": {
+            "description": "Space ID associated with the token",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "system": {
+            "description": "System access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "vector": {
+            "description": "Vector access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "version": {
+            "description": "Version access level (0: deny, 1: read-only, 2: write)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "space_id",
+          "system",
+          "space",
+          "version",
+          "vector",
+          "snapshot",
+          "security",
+          "keyvalue"
+        ],
+        "type": "object"
+      },
+      "RbacTokenResponse": {
+        "description": "Response structure for RBAC token creation",
+        "properties": {
+          "result": {
+            "description": "Result of the operation",
+            "type": "string"
+          },
+          "token": {
+            "description": "Generated token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "result",
+          "token"
+        ],
+        "type": "object"
+      },
+      "SpaceErrorResponse": {
+        "description": "ErrorResponse structure for error messages",
+        "properties": {
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
+      "SpaceInfo": {
+        "description": "Space information structure",
+        "properties": {
+          "id": {
+            "description": "ID of the space",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "spacename": {
+            "description": "Name of the space",
+            "type": "string"
+          }
+        },
+        "required": [
+          "spacename",
+          "id"
+        ],
+        "type": "object"
+      },
+      "SpaceRequest": {
+        "description": "SpaceRequest structure for creating a new space",
+        "properties": {
+          "dense": {
+            "$ref": "#/components/schemas/DenseConfig",
+            "description": "Dense vector configuration (Optional)"
+          },
+          "dimension": {
+            "description": "Dimensionality of the space (Optional)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "hnsw_config": {
+            "$ref": "#/components/schemas/HnswConfig",
+            "description": "HNSW configuration (Optional)"
+          },
+          "indexes": {
+            "description": "Indexes configuration (Optional)"
+          },
+          "metric": {
+            "description": "Metric type, options are \"l2\", \"cosine\", \"ip\" (Optional)",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the space (Required)",
+            "type": "string"
+          },
+          "quantization_config": {
+            "$ref": "#/components/schemas/QuantizationConfig",
+            "description": "Quantization configuration (Optional)"
+          },
+          "sparse": {
+            "$ref": "#/components/schemas/SparseConfig",
+            "description": "Sparse vector configuration (Optional)"
+          }
+        },
         "required": [
           "name"
         ],
-        "type": "object",
+        "type": "object"
+      },
+      "SpaceResponse": {
+        "description": "Space response structure",
         "properties": {
+          "created_time_utc": {
+            "description": "UTC time of creation",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
           "name": {
-            "description": "The name of the plant",
+            "description": "Name of the space",
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+          "spaceId": {
+            "description": "Unique identifier for the space",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
           },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+          "updated_time_utc": {
+            "description": "UTC time of last update",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "version": {
+            "$ref": "#/components/schemas/VersionData",
+            "description": "Version information of the space"
           }
-        ]
-      },
-      "Error": {
+        },
         "required": [
-          "error",
-          "message"
+          "created_time_utc",
+          "name",
+          "spaceId",
+          "updated_time_utc",
+          "version"
         ],
-        "type": "object",
+        "type": "object"
+      },
+      "SparseConfig": {
+        "description": "Sparse vector configuration structure",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
+          "metric": {
+            "description": "Metric type for the sparse vector, options are \"l2\", \"cosine\", \"ip\" (Optional)",
             "type": "string"
           }
-        }
+        },
+        "type": "object"
+      },
+      "DenseConfig": {
+        "description": "Dense vector configuration structure",
+        "properties": {
+          "dimension": {
+            "description": "Dimension of the dense vector (Optional)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "hnsw_config": {
+            "$ref": "#/components/schemas/HnswConfig",
+            "description": "HNSW configuration for dense vector (Optional)"
+          },
+          "metric": {
+            "description": "Metric type for the dense vector, options are \"l2\", \"cosine\", \"ip\" (Optional)",
+            "type": "string"
+          },
+          "quantization_config": {
+            "$ref": "#/components/schemas/QuantizationConfig",
+            "description": "Quantization configuration for dense vector (Optional)"
+          }
+        },
+        "type": "object"
+      },
+      "HnswConfig": {
+        "description": "HNSW configuration structure",
+        "properties": {
+          "EfConstruct": {
+            "description": "EfConstruct value for HNSW configuration (Optional)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "M": {
+            "description": "M value for HNSW configuration (Optional)",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "ProductQuantizationConfig": {
+        "description": "Product quantization configuration structure",
+        "properties": {
+          "AlwaysRam": {
+            "description": "Always keep in RAM (Optional)",
+            "type": "boolean"
+          },
+          "Compression": {
+            "description": "Compression method (Optional)",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "QuantizationConfig": {
+        "description": "Quantization configuration structure",
+        "properties": {
+          "Product": {
+            "$ref": "#/components/schemas/ProductQuantizationConfig",
+            "description": "Product quantization configuration (Optional)"
+          },
+          "Scalar": {
+            "$ref": "#/components/schemas/ScalarQuantizationConfig",
+            "description": "Scalar quantization configuration (Optional)"
+          }
+        },
+        "type": "object"
+      },
+      "ScalarQuantizationConfig": {
+        "description": "Scalar quantization configuration structure",
+        "properties": {
+          "AlwaysRam": {
+            "description": "Always keep in RAM (Optional)",
+            "type": "boolean"
+          },
+          "Quantile": {
+            "description": "Quantile value (Optional)",
+            "format": "double",
+            "type": "number"
+          },
+          "Type": {
+            "description": "Quantization type, options are \"f32\", \"f16\", \"int8\", \"int16\", \"int32\" (Optional)",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "VersionData": {
+        "description": "Version information structure",
+        "properties": {
+          "vectorIndices": {
+            "description": "List of vector indices for the version",
+            "items": {
+              "$ref": "#/components/schemas/VectorIndexData"
+            },
+            "type": "array"
+          },
+          "versionId": {
+            "description": "Unique identifier for the version",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "vectorIndices",
+          "versionId"
+        ],
+        "type": "object"
+      },
+      "VectorIndexData": {
+        "description": "Vector index information structure",
+        "properties": {
+          "created_time_utc": {
+            "description": "UTC time of creation",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "dimension": {
+            "description": "Dimensionality of the vector index",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "hnswConfig": {
+            "$ref": "#/components/schemas/HnswConfig",
+            "description": "HNSW configuration for the vector index"
+          },
+          "is_default": {
+            "description": "Whether this index is the default index",
+            "type": "boolean"
+          },
+          "metricType": {
+            "description": "Metric type used in the vector index",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "name": {
+            "description": "Name of the vector index",
+            "type": "string"
+          },
+          "quantizationConfig": {
+            "$ref": "#/components/schemas/QuantizationConfig",
+            "description": "Quantization configuration for the vector index"
+          },
+          "updated_time_utc": {
+            "description": "UTC time of last update",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "vectorIndexId": {
+            "description": "Unique identifier for the vector index",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "vectorValueType": {
+            "description": "Type of vector value",
+            "format": "int32",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "created_time_utc",
+          "dimension",
+          "hnswConfig",
+          "is_default",
+          "metricType",
+          "name",
+          "quantizationConfig",
+          "updated_time_utc",
+          "vectorIndexId",
+          "vectorValueType"
+        ],
+        "type": "object"
       }
     },
     "securitySchemes": {

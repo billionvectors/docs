@@ -1,0 +1,1951 @@
+{
+    "components": {
+        "schemas": {
+            "CreateSnapshotRequest": {
+                "description": "Request DTO for creating a snapshot",
+                "properties": {
+                    "spacename": {
+                        "description": "The name of the space for which the snapshot is created",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "spacename"
+                ],
+                "type": "object"
+            },
+            "DenseConfig": {
+                "description": "Dense vector configuration structure",
+                "properties": {
+                    "dimension": {
+                        "description": "Dimension of the dense vector (Optional)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "hnsw_config": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/HnswConfig",
+                                "description": "HNSW configuration for dense vector (Optional)"
+                            }
+                        ]
+                    },
+                    "metric": {
+                        "description": "Metric type for the dense vector, options are \"l2\", \"cosine\", \"ip\" (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "quantization_config": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/QuantizationConfig",
+                                "description": "Quantization configuration for dense vector (Optional)"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "GetVectorsResponse": {
+                "description": "Response structure for retrieving vectors by version",
+                "properties": {
+                    "vectors": {
+                        "description": "List of vectors",
+                        "items": {
+                            "$ref": "#/components/schemas/VectorDataResponse"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "vectors"
+                ],
+                "type": "object"
+            },
+            "HnswConfig": {
+                "description": "HNSW configuration structure",
+                "properties": {
+                    "EfConstruct": {
+                        "description": "EfConstruct value for HNSW configuration (Optional)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "M": {
+                        "description": "M value for HNSW configuration (Optional)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "KeyValueErrorResponse": {
+                "description": "ErrorResponse DTO for key-value operations",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "KeyValueRequest": {
+                "description": "Request DTO for key-value operations",
+                "properties": {
+                    "text": {
+                        "description": "put the storage operation",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "text"
+                ],
+                "type": "object"
+            },
+            "KeyValueResponse": {
+                "description": "Response DTO for key-value operations",
+                "properties": {
+                    "result": {
+                        "description": "Result of the operation, should be \"success\" for successful operations",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "type": "object"
+            },
+            "ListKeysResponse": {
+                "description": "List of keys response DTO",
+                "properties": {
+                    "keys": {
+                        "description": "List of keys stored in the system",
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "keys"
+                ],
+                "type": "object"
+            },
+            "ListRbacTokensResponse": {
+                "description": "Response structure for listing RBAC tokens",
+                "properties": {
+                    "tokens": {
+                        "description": "Array of token objects with detailed information",
+                        "items": {
+                            "$ref": "#/components/schemas/TokenDetails"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "tokens"
+                ],
+                "type": "object"
+            },
+            "ListSnapshotsResponse": {
+                "description": "DTO for listing snapshots",
+                "properties": {
+                    "snapshots": {
+                        "description": "List of snapshots available",
+                        "items": {
+                            "$ref": "#/components/schemas/SnapshotInfo"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "snapshots"
+                ],
+                "type": "object"
+            },
+            "ListSpacesResponse": {
+                "description": "Response structure for listing spaces",
+                "properties": {
+                    "values": {
+                        "description": "List of space names and their corresponding IDs",
+                        "items": {
+                            "$ref": "#/components/schemas/SpaceInfo"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "values"
+                ],
+                "type": "object"
+            },
+            "ListVersionsResponse": {
+                "description": "Response structure for listing all versions",
+                "properties": {
+                    "values": {
+                        "description": "List of versions with their details",
+                        "items": {
+                            "$ref": "#/components/schemas/VersionInfo"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "values"
+                ],
+                "type": "object"
+            },
+            "ProductQuantizationConfig": {
+                "description": "Product quantization configuration structure",
+                "properties": {
+                    "AlwaysRam": {
+                        "description": "Always keep in RAM (Optional)",
+                        "type": "boolean"
+                    },
+                    "Compression": {
+                        "description": "Compression method (Optional)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "QuantizationConfig": {
+                "description": "Quantization configuration structure",
+                "properties": {
+                    "Product": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ProductQuantizationConfig",
+                                "description": "Product quantization configuration (Optional)"
+                            }
+                        ]
+                    },
+                    "Scalar": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ScalarQuantizationConfig",
+                                "description": "Scalar quantization configuration (Optional)"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "RbacTokenErrorResponse": {
+                "description": "Error response structure",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "RbacTokenRequest": {
+                "description": "Request structure for creating or updating RBAC token",
+                "properties": {
+                    "keyvalue": {
+                        "description": "Key-value access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "security": {
+                        "description": "Security access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "snapshot": {
+                        "description": "Snapshot access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "space": {
+                        "description": "Space access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "space_id": {
+                        "description": "Space ID associated with the token",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "system": {
+                        "description": "System access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "vector": {
+                        "description": "Vector access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "version": {
+                        "description": "Version access level (0: deny, 1: read-only, 2: write)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "space_id",
+                    "system",
+                    "space",
+                    "version",
+                    "vector",
+                    "snapshot",
+                    "security",
+                    "keyvalue"
+                ],
+                "type": "object"
+            },
+            "RbacTokenResponse": {
+                "description": "Response structure for RBAC token creation",
+                "properties": {
+                    "result": {
+                        "description": "Result of the operation",
+                        "type": "string"
+                    },
+                    "token": {
+                        "description": "Generated token",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "result",
+                    "token"
+                ],
+                "type": "object"
+            },
+            "ScalarQuantizationConfig": {
+                "description": "Scalar quantization configuration structure",
+                "properties": {
+                    "AlwaysRam": {
+                        "description": "Always keep in RAM (Optional)",
+                        "type": "boolean"
+                    },
+                    "Quantile": {
+                        "description": "Quantile value (Optional)",
+                        "format": "double",
+                        "type": "number"
+                    },
+                    "Type": {
+                        "description": "Quantization type, options are \"f32\", \"f16\", \"int8\", \"int16\", \"int32\" (Optional)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SearchErrorResponse": {
+                "description": "ErrorResponse DTO for search operations",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "SearchRequest": {
+                "description": "Request DTO for search operations",
+                "properties": {
+                    "vector": {
+                        "description": "The vector used for searching",
+                        "items": {
+                            "format": "float",
+                            "type": "number"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "vector"
+                ],
+                "type": "object"
+            },
+            "SearchResponse": {
+                "description": "Response DTO for search results",
+                "properties": {
+                    "distance": {
+                        "description": "Distance between the input vector and the found vector",
+                        "format": "double",
+                        "type": "number"
+                    },
+                    "label": {
+                        "description": "Label corresponding to the found vector",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "distance",
+                    "label"
+                ],
+                "type": "object"
+            },
+            "SnapshotErrorResponse": {
+                "description": "ErrorResponse DTO for snapshot operations",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "SnapshotResponse": {
+                "description": "Response DTO for snapshot operations",
+                "properties": {
+                    "result": {
+                        "description": "Operation result message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "type": "object"
+            },
+            "SpaceErrorResponse": {
+                "description": "ErrorResponse structure for error messages",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "SpaceInfo": {
+                "description": "Space information structure",
+                "properties": {
+                    "id": {
+                        "description": "ID of the space",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "spacename": {
+                        "description": "Name of the space",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "spacename",
+                    "id"
+                ],
+                "type": "object"
+            },
+            "SpaceRequest": {
+                "description": "SpaceRequest structure for creating a new space",
+                "properties": {
+                    "dense": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/DenseConfig",
+                                "description": "Dense vector configuration (Optional)"
+                            }
+                        ]
+                    },
+                    "dimension": {
+                        "description": "Dimensionality of the space (Optional)",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "hnsw_config": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/HnswConfig",
+                                "description": "HNSW configuration (Optional)"
+                            }
+                        ]
+                    },
+                    "indexes": {
+                        "description": "Indexes configuration (Optional)"
+                    },
+                    "metric": {
+                        "description": "Metric type, options are \"l2\", \"cosine\", \"ip\" (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "name": {
+                        "description": "Name of the space (Required)",
+                        "type": "string"
+                    },
+                    "quantization_config": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/QuantizationConfig",
+                                "description": "Quantization configuration (Optional)"
+                            }
+                        ]
+                    },
+                    "sparse": {
+                        "allOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "$ref": "#/components/schemas/SparseConfig",
+                                "description": "Sparse vector configuration (Optional)"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "name"
+                ],
+                "type": "object"
+            },
+            "SpaceResponse": {
+                "description": "Space response structure",
+                "properties": {
+                    "created_time_utc": {
+                        "description": "UTC time of creation",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Name of the space",
+                        "type": "string"
+                    },
+                    "spaceId": {
+                        "description": "Unique identifier for the space",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "updated_time_utc": {
+                        "description": "UTC time of last update",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "version": {
+                        "$ref": "#/components/schemas/VersionData",
+                        "description": "Version information of the space"
+                    }
+                },
+                "required": [
+                    "created_time_utc",
+                    "name",
+                    "spaceId",
+                    "updated_time_utc",
+                    "version"
+                ],
+                "type": "object"
+            },
+            "SparseConfig": {
+                "description": "Sparse vector configuration structure",
+                "properties": {
+                    "metric": {
+                        "description": "Metric type for the sparse vector, options are \"l2\", \"cosine\", \"ip\" (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "TokenDetails": {
+                "description": "Structure representing detailed information of a token",
+                "properties": {
+                    "expire_time_utc": {
+                        "description": "Expiry time in UTC",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "id": {
+                        "description": "Unique identifier of the token",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "keyvalue": {
+                        "description": "Key-value permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "search": {
+                        "description": "Search permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "security": {
+                        "description": "Security permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "snapshot": {
+                        "description": "Snapshot permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "space": {
+                        "description": "Space permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "space_id": {
+                        "description": "Space ID associated with the token",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "system": {
+                        "description": "System permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "token": {
+                        "description": "The token value",
+                        "type": "string"
+                    },
+                    "vector": {
+                        "description": "Vector permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "version": {
+                        "description": "Version permission level",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "space_id",
+                    "token",
+                    "expire_time_utc",
+                    "system",
+                    "space",
+                    "version",
+                    "vector",
+                    "search",
+                    "snapshot",
+                    "security",
+                    "keyvalue"
+                ],
+                "type": "object"
+            },
+            "VectorErrorResponse": {
+                "description": "Error response structure",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "VectorIndexData": {
+                "description": "Vector index information structure",
+                "properties": {
+                    "created_time_utc": {
+                        "description": "UTC time of creation",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "dimension": {
+                        "description": "Dimensionality of the vector index",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "hnswConfig": {
+                        "$ref": "#/components/schemas/HnswConfig",
+                        "description": "HNSW configuration for the vector index"
+                    },
+                    "is_default": {
+                        "description": "Whether this index is the default index",
+                        "type": "boolean"
+                    },
+                    "metricType": {
+                        "description": "Metric type used in the vector index",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Name of the vector index",
+                        "type": "string"
+                    },
+                    "quantizationConfig": {
+                        "$ref": "#/components/schemas/QuantizationConfig",
+                        "description": "Quantization configuration for the vector index"
+                    },
+                    "updated_time_utc": {
+                        "description": "UTC time of last update",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "vectorIndexId": {
+                        "description": "Unique identifier for the vector index",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "vectorValueType": {
+                        "description": "Type of vector value",
+                        "format": "int32",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "created_time_utc",
+                    "dimension",
+                    "hnswConfig",
+                    "is_default",
+                    "metricType",
+                    "name",
+                    "quantizationConfig",
+                    "updated_time_utc",
+                    "vectorIndexId",
+                    "vectorValueType"
+                ],
+                "type": "object"
+            },
+            "VectorRequest": {
+                "description": "Request structure for creating or updating vectors",
+                "properties": {
+                    "vectors": {
+                        "description": "List of vectors to create or update",
+                        "items": {
+                            "$ref": "#/components/schemas/VectorData"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "vectors"
+                ],
+                "type": "object"
+            },
+            "VectorResponse": {
+                "description": "Response structure for a successful vector operation",
+                "properties": {
+                    "result": {
+                        "description": "Result of the operation (success message)",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "type": "object"
+            },
+            "VersionData": {
+                "description": "Version information structure",
+                "properties": {
+                    "vectorIndices": {
+                        "description": "List of vector indices for the version",
+                        "items": {
+                            "$ref": "#/components/schemas/VectorIndexData"
+                        },
+                        "type": "array"
+                    },
+                    "versionId": {
+                        "description": "Unique identifier for the version",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "vectorIndices",
+                    "versionId"
+                ],
+                "type": "object"
+            },
+            "VersionErrorResponse": {
+                "description": "ErrorResponse structure for handling errors",
+                "properties": {
+                    "error": {
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "error"
+                ],
+                "type": "object"
+            },
+            "VersionInfo": {
+                "description": "VersionInfo structure containing basic version information",
+                "properties": {
+                    "description": {
+                        "description": "Description of the version (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "is_default": {
+                        "description": "Whether this version is the default version",
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "description": "Name of the version",
+                        "type": "string"
+                    },
+                    "tag": {
+                        "description": "Tag associated with the version (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "versionId": {
+                        "description": "ID of the version",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "name",
+                    "versionId",
+                    "is_default"
+                ],
+                "type": "object"
+            },
+            "VersionRequest": {
+                "description": "VersionRequest structure for creating a new version",
+                "properties": {
+                    "description": {
+                        "description": "Description of the version (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "is_default": {
+                        "description": "Whether this version is the default version (Optional)",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "name": {
+                        "description": "Name of the version (Required)",
+                        "type": "string"
+                    },
+                    "tag": {
+                        "description": "Tag associated with the version (Optional)",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "required": [
+                    "name"
+                ],
+                "type": "object"
+            },
+            "VersionResponse": {
+                "description": "VersionResponse structure for returning version details",
+                "properties": {
+                    "created_time_utc": {
+                        "description": "UTC time when the version was created",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "description": {
+                        "description": "Description of the version",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "is_default": {
+                        "description": "Whether this version is the default version",
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "description": "Name of the version",
+                        "type": "string"
+                    },
+                    "tag": {
+                        "description": "Tag associated with the version",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "updated_time_utc": {
+                        "description": "UTC time when the version was last updated",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "versionId": {
+                        "description": "Unique identifier for the version",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "created_time_utc",
+                    "is_default",
+                    "name",
+                    "updated_time_utc",
+                    "versionId"
+                ],
+                "type": "object"
+            }
+        }
+    },
+    "info": {
+        "description": "",
+        "license": {
+            "name": ""
+        },
+        "title": "asimplevectors",
+        "version": "0.1.0"
+    },
+    "openapi": "3.1.0",
+    "paths": {
+        "/api/security/tokens": {
+            "get": {
+                "operationId": "list_rbac_tokens",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListRbacTokensResponse"
+                                }
+                            }
+                        },
+                        "description": "List of RBAC tokens"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "security_handler"
+                ]
+            },
+            "post": {
+                "operationId": "create_rbac_token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RbacTokenRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenResponse"
+                                }
+                            }
+                        },
+                        "description": "RBAC token created successfully"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "security_handler"
+                ]
+            }
+        },
+        "/api/security/tokens/{token}": {
+            "delete": {
+                "operationId": "delete_rbac_token",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenResponse"
+                                }
+                            }
+                        },
+                        "description": "RBAC token deleted successfully"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "security_handler"
+                ]
+            },
+            "put": {
+                "operationId": "update_rbac_token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RbacTokenRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenResponse"
+                                }
+                            }
+                        },
+                        "description": "RBAC token updated successfully"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RbacTokenErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "tags": [
+                    "security_handler"
+                ]
+            }
+        },
+        "/api/space": {
+            "post": {
+                "operationId": "space",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SpaceRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SpaceResponse"
+                                }
+                            }
+                        },
+                        "description": "Create spaces successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SpaceErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "space_handler"
+                ]
+            }
+        },
+        "/api/space/{space_name}": {
+            "delete": {
+                "operationId": "delete_space",
+                "responses": {
+                    "200": {
+                        "description": "Delete Space successfuly"
+                    }
+                },
+                "tags": [
+                    "space_handler"
+                ]
+            },
+            "get": {
+                "operationId": "get_space",
+                "responses": {
+                    "200": {
+                        "description": "Get Space"
+                    }
+                },
+                "tags": [
+                    "space_handler"
+                ]
+            }
+        },
+        "/api/space/{space_name}/search": {
+            "post": {
+                "operationId": "search",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/SearchResponse"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Search results successfully retrieved"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SearchErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "search_handler"
+                ]
+            }
+        },
+        "/api/space/{space_name}/storage/{key}": {
+            "delete": {
+                "operationId": "remove_key",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KeyValueRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueResponse"
+                                }
+                            }
+                        },
+                        "description": "Key deleted successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "kvstorage_handler"
+                ]
+            },
+            "get": {
+                "operationId": "get_key",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Key retrieved successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Key not found"
+                    }
+                },
+                "tags": [
+                    "kvstorage_handler"
+                ]
+            },
+            "post": {
+                "operationId": "put_key",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/KeyValueRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueResponse"
+                                }
+                            }
+                        },
+                        "description": "Key stored successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "kvstorage_handler"
+                ]
+            }
+        },
+        "/api/space/{space_name}/storage_keys": {
+            "get": {
+                "operationId": "list_keys",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListKeysResponse"
+                                }
+                            }
+                        },
+                        "description": "Keys listed successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/KeyValueErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "kvstorage_handler"
+                ]
+            }
+        },
+        "/api/space/{space_name}/version/{version_id}/search": {
+            "post": {
+                "operationId": "search_with_version",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/SearchResponse"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Search results successfully retrieved"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SearchErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "search_handler"
+                ]
+            }
+        },
+        "/api/spaces": {
+            "get": {
+                "operationId": "list_spaces",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListSpacesResponse"
+                                }
+                            }
+                        },
+                        "description": "List Space successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SpaceErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "Space"
+                ]
+            }
+        },
+        "/snapshot": {
+            "post": {
+                "operationId": "create_snapshot",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateSnapshotRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotResponse"
+                                }
+                            }
+                        },
+                        "description": "Snapshot created successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "snapshot_handler"
+                ]
+            }
+        },
+        "/snapshot/{file_name}/download": {
+            "get": {
+                "operationId": "download_snapshot",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Snapshot downloaded successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "snapshot_handler"
+                ]
+            }
+        },
+        "/snapshot/{file_name}/restore": {
+            "post": {
+                "operationId": "restore_snapshot",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotResponse"
+                                }
+                            }
+                        },
+                        "description": "Snapshot restored successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "snapshot_handler"
+                ]
+            }
+        },
+        "/snapshots": {
+            "get": {
+                "operationId": "list_snapshots",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListSnapshotsResponse"
+                                }
+                            }
+                        },
+                        "description": "List of snapshots retrieved successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "snapshot_handler"
+                ]
+            }
+        },
+        "/snapshots/delete": {
+            "delete": {
+                "operationId": "delete_snapshots",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotResponse"
+                                }
+                            }
+                        },
+                        "description": "Snapshots deleted successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SnapshotErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "snapshot_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/vector": {
+            "post": {
+                "operationId": "vector",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VectorRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VectorResponse"
+                                }
+                            }
+                        },
+                        "description": "Vector created successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VectorErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "vector_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/version": {
+            "post": {
+                "operationId": "create_version",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VersionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionResponse"
+                                }
+                            }
+                        },
+                        "description": "Version created successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "version_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/version/default": {
+            "get": {
+                "operationId": "get_default_version",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionResponse"
+                                }
+                            }
+                        },
+                        "description": "Version details retrieved successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Version not found"
+                    }
+                },
+                "tags": [
+                    "version_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/version/{version_id}": {
+            "get": {
+                "operationId": "get_version_by_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionResponse"
+                                }
+                            }
+                        },
+                        "description": "Version details retrieved successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Version not found"
+                    }
+                },
+                "tags": [
+                    "version_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/version/{version_id}/vector": {
+            "post": {
+                "operationId": "vector_with_version",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VectorRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VectorResponse"
+                                }
+                            }
+                        },
+                        "description": "Vector added to version successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VectorErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "vector_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/version/{version_id}/vectors": {
+            "get": {
+                "operationId": "get_vectors_by_version_id",
+                "parameters": [
+                    {
+                        "description": "Starting index of vectors",
+                        "in": "path",
+                        "name": "start",
+                        "required": true,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "Maximum number of vectors to retrieve",
+                        "in": "path",
+                        "name": "limit",
+                        "required": true,
+                        "schema": {
+                            "format": "int32",
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetVectorsResponse"
+                                }
+                            }
+                        },
+                        "description": "Vectors retrieved successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VectorErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VectorErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Vectors not found"
+                    }
+                },
+                "tags": [
+                    "vector_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/version/{version_name}/by-name": {
+            "get": {
+                "operationId": "get_version_by_name",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionResponse"
+                                }
+                            }
+                        },
+                        "description": "Version details retrieved successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Version not found"
+                    }
+                },
+                "tags": [
+                    "version_handler"
+                ]
+            }
+        },
+        "/space/{space_name}/versions": {
+            "get": {
+                "operationId": "list_versions",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListVersionsResponse"
+                                }
+                            }
+                        },
+                        "description": "Versions listed successfully"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "version_handler"
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "description": "space items management endpoints.",
+            "name": "space"
+        }
+    ]
+}
