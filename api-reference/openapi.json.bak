@@ -437,6 +437,19 @@
                 ],
                 "type": "object"
             },
+            "SnapshotInfo": {
+                "description": "DTO for snapshot information",
+                "properties": {
+                    "file_name": {
+                        "description": "Name of the snapshot file",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "file_name"
+                ],
+                "type": "object"
+            },
             "SnapshotResponse": {
                 "description": "Response DTO for snapshot operations",
                 "properties": {
@@ -698,6 +711,62 @@
                     "snapshot",
                     "security",
                     "keyvalue"
+                ],
+                "type": "object"
+            },
+            "VectorData": {
+                "description": "Structure representing individual vector data",
+                "properties": {
+                    "data": {
+                        "description": "Vector data (array of floats)",
+                        "items": {
+                            "format": "float",
+                            "type": "number"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "description": "Unique identifier for the vector",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "metadata": {
+                        "description": "Metadata associated with the vector"
+                    }
+                },
+                "required": [
+                    "id",
+                    "data",
+                    "metadata"
+                ],
+                "type": "object"
+            },
+            "VectorDataResponse": {
+                "description": "Structure representing vector data in a response",
+                "properties": {
+                    "data": {
+                        "description": "Vector data (array of floats)",
+                        "items": {
+                            "format": "float",
+                            "type": "number"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "description": "Unique identifier for the vector",
+                        "format": "int64",
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "metadata": {
+                        "description": "Metadata associated with the vector"
+                    }
+                },
+                "required": [
+                    "id",
+                    "data",
+                    "metadata"
                 ],
                 "type": "object"
             },
