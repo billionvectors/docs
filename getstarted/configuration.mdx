@@ -35,6 +35,9 @@ Below are the key environment variables used in `asimplevectors`. These can be s
 - `ATV_INSTANCE_ID`: Set the instance ID for the current execution.
 - `ATV_HTTP_ADDR`: Define the HTTP address for the service.
 - `ATV_RPC_ADDR`: Define the RPC address for inter-process communication.
+- `ATV_ENABLE_SWAGGER_UI`: Enable or disable Swagger UI (true: enable, false: disable).
+- `ATV_RAFT_HEARTBEAT_INTERVAL`: Set the Raft heartbeat interval in milliseconds. (min 0 ~ max 299)
+- `ATV_RAFT_ELECTION_TIMEOUT`: Set the Raft election timeout in milliseconds. (min 0 ~ max 299)
 
 ## Command-Line Arguments
 
@@ -56,6 +59,9 @@ Here are the available command-line arguments:
 - `--id`: Define the instance ID.
 - `--http-addr`: Set the HTTP address.
 - `--rpc-addr`: Set the RPC address.
+- `--enable_swagger_ui`: Enable or disable Swagger UI (true: enable, false: disable).
+- `--raft_heartbeat_interval`: Set the Raft heartbeat interval in milliseconds.
+- `--raft_election_timeout`: Set the Raft election timeout in milliseconds.
 
 ### Example Usage
 
